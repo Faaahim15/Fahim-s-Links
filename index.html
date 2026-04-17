@@ -1,0 +1,534 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fahim — Links</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #080808;
+      --surface:  #111111;
+      --border:   rgba(255,255,255,0.07);
+      --text:     #edeae2;
+      --muted:    #7a7a7a;
+      --accent:   #e8a020;
+      --accent2:  #ff6b35;
+      --glow:     rgba(232,160,32,0.18);
+      --radius:   16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 20px 64px;
+      overflow-x: hidden;
+    }
+
+    /* ── noise grain overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.45;
+    }
+
+    /* ── ambient glow blobs ── */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob-1 {
+      width: 420px; height: 420px;
+      background: radial-gradient(circle, rgba(232,160,32,0.10) 0%, transparent 70%);
+      top: -120px; right: -100px;
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+    .blob-2 {
+      width: 340px; height: 340px;
+      background: radial-gradient(circle, rgba(255,107,53,0.07) 0%, transparent 70%);
+      bottom: 60px; left: -80px;
+      animation: drift 16s ease-in-out infinite alternate-reverse;
+    }
+    @keyframes drift {
+      from { transform: translate(0,0) scale(1); }
+      to   { transform: translate(30px,20px) scale(1.05); }
+    }
+
+    /* ── main container ── */
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* ── header ── */
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    .header-left { display: flex; flex-direction: column; gap: 8px; }
+
+    .name {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.6rem, 8vw, 3.6rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--text) 40%, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .tagline {
+      font-size: 0.88rem;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* ── share button ── */
+    .share-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+    .share-btn:hover {
+      color: var(--accent);
+      border-color: rgba(232,160,32,0.4);
+      box-shadow: 0 0 16px var(--glow);
+      transform: scale(1.08);
+    }
+    .share-btn svg { width: 18px; height: 18px; }
+
+    /* ── divider ── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 28px;
+      animation: fadeUp 0.7s 0.1s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    /* ── about ── */
+    .about {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      margin-bottom: 36px;
+      animation: fadeUp 0.7s 0.15s cubic-bezier(0.22,1,0.36,1) both;
+      position: relative;
+      overflow: hidden;
+    }
+    .about::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), transparent);
+      border-radius: 2px 2px 0 0;
+    }
+    .about-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .about p {
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: #b5b2a9;
+      line-height: 1.7;
+    }
+
+    /* ── section label ── */
+    .section-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+      padding-left: 2px;
+    }
+
+    /* ── links group ── */
+    .links-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    /* ── link card ── */
+    .link-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s, background 0.25s;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .link-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.03), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .link-card:hover {
+      border-color: rgba(232,160,32,0.35);
+      box-shadow: 0 0 24px var(--glow), 0 4px 20px rgba(0,0,0,0.4);
+      transform: translateY(-2px);
+      background: #161616;
+    }
+    .link-card:hover::after { opacity: 1; }
+    .link-card:active { transform: translateY(0) scale(0.99); }
+
+    .icon-wrap {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 18px;
+    }
+
+    /* platform icon colors */
+    .yt   { background: rgba(255,0,0,0.12); }
+    .ig   { background: rgba(225,48,108,0.12); }
+    .tw   { background: rgba(145,70,255,0.12); }
+    .x    { background: rgba(255,255,255,0.07); }
+
+    .link-text { flex: 1; }
+    .link-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 0.97rem;
+      letter-spacing: -0.01em;
+    }
+    .link-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .arrow {
+      color: var(--muted);
+      transition: color 0.2s, transform 0.2s;
+      flex-shrink: 0;
+    }
+    .link-card:hover .arrow {
+      color: var(--accent);
+      transform: translateX(3px);
+    }
+
+    /* ── staggered entry animations ── */
+    .link-card {
+      animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .links-group:nth-child(1) .link-card:nth-child(1) { animation-delay: 0.20s; }
+    .links-group:nth-child(1) .link-card:nth-child(2) { animation-delay: 0.26s; }
+    .links-group:nth-child(1) .link-card:nth-child(3) { animation-delay: 0.32s; }
+    .links-group:nth-child(2) .link-card:nth-child(1) { animation-delay: 0.38s; }
+    .links-group:nth-child(3) .link-card:nth-child(1) { animation-delay: 0.44s; }
+    .links-group:nth-child(4) .link-card:nth-child(1) { animation-delay: 0.50s; }
+    .section-label { animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) both; }
+    .links-group:nth-child(1) > .section-label { animation-delay: 0.18s; }
+    .links-group:nth-child(2) > .section-label { animation-delay: 0.36s; }
+    .links-group:nth-child(3) > .section-label { animation-delay: 0.42s; }
+    .links-group:nth-child(4) > .section-label { animation-delay: 0.48s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── footer ── */
+    .footer {
+      margin-top: 16px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #3a3a3a;
+      animation: fadeUp 0.7s 0.6s cubic-bezier(0.22,1,0.36,1) both;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── toast ── */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #1a1a1a;
+      border: 1px solid rgba(232,160,32,0.3);
+      color: var(--text);
+      font-size: 0.85rem;
+      padding: 12px 22px;
+      border-radius: 40px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 16px var(--glow);
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s;
+      opacity: 0;
+      z-index: 999;
+      white-space: nowrap;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* ── responsive ── */
+    @media (max-width: 480px) {
+      body { padding: 36px 16px 56px; }
+      .link-card { padding: 14px 16px; gap: 13px; }
+      .icon-wrap { width: 36px; height: 36px; font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ambient blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <div class="container">
+
+    <!-- ── Header ── -->
+    <div class="header">
+      <div class="header-left">
+        <h1 class="name">Fahim</h1>
+        <span class="tagline">Creator · Tech · Live</span>
+      </div>
+      <button class="share-btn" onclick="handleShare()" aria-label="Share this page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ── About ── -->
+    <div class="about">
+      <div class="about-label">About Me</div>
+      <p>Hey, I'm Fahim. I do tech stuff and some other stuff I am passionate about. Welcome to my corner of the internet.</p>
+    </div>
+
+    <!-- ── YouTube ── -->
+    <div class="links-group">
+      <div class="section-label">YouTube</div>
+
+      <a href="https://youtube.com/@fahimtech" target="_blank" rel="noopener noreferrer" class="link-card">
+        <div class="icon-wrap yt">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#ff4444">
+            <path d="M23.5 6.2a3.01 3.01 0 0 0-2.12-2.13C19.54 3.6 12 3.6 12 3.6s-7.54 0-9.38.47A3.01 3.01 0 0 0 .5 6.2C0 8.06 0 12 0 12s0 3.94.5 5.8a3.01 3.01 0 0 0 2.12 2.13C4.46 20.4 12 20.4 12 20.4s7.54 0 9.38-.47a3.01 3.01 0 0 0 2.12-2.13C24 15.94 24 12 24 12s0-3.94-.5-5.8z"/>
+            <polygon fill="#fff" points="9.75,15.02 15.5,12 9.75,8.98"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-title">FahimTech</div>
+          <div class="link-sub">@fahimtech</div>
+        </div>
+        <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+
+      <a href="https://youtube.com/@fahimtechlive" target="_blank" rel="noopener noreferrer" class="link-card">
+        <div class="icon-wrap yt">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#ff4444">
+            <path d="M23.5 6.2a3.01 3.01 0 0 0-2.12-2.13C19.54 3.6 12 3.6 12 3.6s-7.54 0-9.38.47A3.01 3.01 0 0 0 .5 6.2C0 8.06 0 12 0 12s0 3.94.5 5.8a3.01 3.01 0 0 0 2.12 2.13C4.46 20.4 12 20.4 12 20.4s7.54 0 9.38-.47a3.01 3.01 0 0 0 2.12-2.13C24 15.94 24 12 24 12s0-3.94-.5-5.8z"/>
+            <polygon fill="#fff" points="9.75,15.02 15.5,12 9.75,8.98"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-title">FahimTech Live</div>
+          <div class="link-sub">@fahimtechlive</div>
+        </div>
+        <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+
+      <a href="https://youtube.com/@itsJustFahim" target="_blank" rel="noopener noreferrer" class="link-card">
+        <div class="icon-wrap yt">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#ff4444">
+            <path d="M23.5 6.2a3.01 3.01 0 0 0-2.12-2.13C19.54 3.6 12 3.6 12 3.6s-7.54 0-9.38.47A3.01 3.01 0 0 0 .5 6.2C0 8.06 0 12 0 12s0 3.94.5 5.8a3.01 3.01 0 0 0 2.12 2.13C4.46 20.4 12 20.4 12 20.4s7.54 0 9.38-.47a3.01 3.01 0 0 0 2.12-2.13C24 15.94 24 12 24 12s0-3.94-.5-5.8z"/>
+            <polygon fill="#fff" points="9.75,15.02 15.5,12 9.75,8.98"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-title">JustFahim</div>
+          <div class="link-sub">@itsJustFahim</div>
+        </div>
+        <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- ── Instagram ── -->
+    <div class="links-group">
+      <div class="section-label">Instagram</div>
+      <a href="https://www.instagram.com/fahimtech.ig/" target="_blank" rel="noopener noreferrer" class="link-card">
+        <div class="icon-wrap ig">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <defs>
+              <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#f09433"/>
+                <stop offset="25%" stop-color="#e6683c"/>
+                <stop offset="50%" stop-color="#dc2743"/>
+                <stop offset="75%" stop-color="#cc2366"/>
+                <stop offset="100%" stop-color="#bc1888"/>
+              </linearGradient>
+            </defs>
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="url(#ig-grad)" stroke-width="2"/>
+            <circle cx="12" cy="12" r="4.5" stroke="url(#ig-grad)" stroke-width="2"/>
+            <circle cx="17.5" cy="6.5" r="1.2" fill="url(#ig-grad)"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-title">FahimTech</div>
+          <div class="link-sub">@fahimtech.ig</div>
+        </div>
+        <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- ── Twitch ── -->
+    <div class="links-group">
+      <div class="section-label">Twitch</div>
+      <a href="https://www.twitch.tv/fahimchillin" target="_blank" rel="noopener noreferrer" class="link-card">
+        <div class="icon-wrap tw">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#9147ff">
+            <path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-title">FahimChillin</div>
+          <div class="link-sub">@fahimchillin</div>
+        </div>
+        <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- ── X / Twitter ── -->
+    <div class="links-group">
+      <div class="section-label">X / Twitter</div>
+      <a href="https://www.x.com/fahimuz_" target="_blank" rel="noopener noreferrer" class="link-card">
+        <div class="icon-wrap x">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#eeebe4">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <div class="link-title">Fahimuz Z. Khan</div>
+          <div class="link-sub">@fahimuz_</div>
+        </div>
+        <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast">🔗 Link copied to clipboard!</div>
+
+  <script>
+    async function handleShare() {
+      const url  = window.location.href;
+      const data = { title: 'Fahim — Links', url };
+
+      // Native share sheet (mobile)
+      if (navigator.share) {
+        try { await navigator.share(data); return; } catch (_) {}
+      }
+
+      // Fallback: copy to clipboard
+      try {
+        await navigator.clipboard.writeText(url);
+        showToast('🔗 Link copied to clipboard!');
+      } catch (_) {
+        showToast('📋 Share: ' + url);
+      }
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2600);
+    }
+
+    // Ripple on card click
+    document.querySelectorAll('.link-card').forEach(card => {
+      card.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        const rect   = this.getBoundingClientRect();
+        const size   = Math.max(rect.width, rect.height);
+        ripple.style.cssText = `
+          position:absolute; border-radius:50%; pointer-events:none;
+          width:${size}px; height:${size}px;
+          left:${e.clientX - rect.left - size/2}px;
+          top:${e.clientY - rect.top  - size/2}px;
+          background:rgba(232,160,32,0.12);
+          transform:scale(0); animation:rippleAnim 0.55s ease-out forwards;
+        `;
+        this.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+
+    // Inject ripple keyframes
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes rippleAnim {
+        to { transform: scale(2.4); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>
